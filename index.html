@@ -43,24 +43,24 @@
           var coordinates = L.PolylineUtil.decode(encoded);
           let turf_line = turf.lineString(coordinates);
           var curved = turf.bezierSpline(turf_line);
-          // console.log(curved)
-          // console.log(coordinates);
           L.polyline(coordinates, {
             color: "blue",
             weight: 2,
             opacity: 0.5,
             lineJoin: "round",
-            // smoothFactor: 10,
           }).addTo(map);
-          // L.polyline(coordinates, {
-          //   color: "red",
-          //   weight: 2,
-          //   opacity: 1,
-          //   lineJoin: "round",
-          //   // smoothFactor: 10,
-          // }).addTo(map);
-          // return;
         }
+
+        // for (let c = 0; c < coordinates.length - 1; c++) {
+        //   await new Promise((r) => setTimeout(r, 30));
+        //   // console.log([coordinates[c], coordinates[c + 1]]);
+        //   let polyline = L.polyline([coordinates[c], coordinates[c + 1]], {
+        //     color: "blue",
+        //     weight: 3,
+        //     opacity: 0.4,
+        //     lineJoin: "round",
+        //   }).addTo(map);
+        // }
       }
     </script>
   </body>
