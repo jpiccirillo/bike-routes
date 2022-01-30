@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <title>Mapping my runs</title>
+  </head>
+
+  <body>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+    <script
+      type="text/javascript"
+      src="https://rawgit.com/jieter/Leaflet.encoded/master/Polyline.encoded.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"
+    />
+    <div id="map" style="width: 100%; height: 100%"></div>
+
+    <script>
+      var map = L.map("map").setView([30.27, -97.75], 13);
+      L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+      }).addTo(map);
+
+      let files = Array(9)
+        .fill()
+        .map((_, i) => i + 1);
+
+      Promise.all(files.map((i) => fetch(`./rides${i}.json`)))
+        .then(async (arr) => {
+          let retval = [];
+          for (let p of arr) retval.push(await p.json());
+          return retval;
+        })
+        .then((arr) => arr.reduce((a, i) => [...a, ...i], []))
+        // .then((arr) => arr.filter((r) => r.type === "Walk"))
+        .then((arr) => arr.filter((r) => r.map && r.map.summary_polyline))
+        .then((arr) => arr.map((r) => r.map.summary_polyline))
+        .then(plot);
+
+      function plot(encodedRoutes) {
+        for (let encoded of encodedRoutes) {
+          var coordinates = L.PolylineUtil.decode(encoded);
+          let turf_line = turf.lineString(coordinates);
+          var curved = turf.bezierSpline(turf_line);
+          // console.log(curved)
+          // console.log(coordinates);
+          L.polyline(coordinates, {
+            color: "blue",
+            weight: 2,
+            opacity: 0.5,
+            lineJoin: "round",
+            // smoothFactor: 10,
+          }).addTo(map);
+          // L.polyline(coordinates, {
+          //   color: "red",
+          //   weight: 2,
+          //   opacity: 1,
+          //   lineJoin: "round",
+          //   // smoothFactor: 10,
+          // }).addTo(map);
+          // return;
+        }
+      }
+    </script>
+  </body>
+</html>
