@@ -4,64 +4,23 @@
   </head>
 
   <body>
-    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
     <script
       type="text/javascript"
       src="https://rawgit.com/jieter/Leaflet.encoded/master/Polyline.encoded.js"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"
-    />
-    <div id="map" style="width: 100%; height: 100%"></div>
-
-    <script>
-      var map = L.map("map").setView([30.27, -97.75], 13);
-      L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-      }).addTo(map);
-
-      let files = Array(9)
-        .fill()
-        .map((_, i) => i + 1);
-
-      Promise.all(files.map((i) => fetch(`./rides${i}.json`)))
-        .then(async (arr) => {
-          let retval = [];
-          for (let p of arr) retval.push(await p.json());
-          return retval;
-        })
-        .then((arr) => arr.reduce((a, i) => [...a, ...i], []))
-        // .then((arr) => arr.filter((r) => r.type === "Walk"))
-        .then((arr) => arr.filter((r) => r.map && r.map.summary_polyline))
-        .then((arr) => arr.map((r) => r.map.summary_polyline))
-        .then(plot);
-
-      function plot(encodedRoutes) {
-        for (let encoded of encodedRoutes) {
-          var coordinates = L.PolylineUtil.decode(encoded);
-          let turf_line = turf.lineString(coordinates);
-          var curved = turf.bezierSpline(turf_line);
-          L.polyline(coordinates, {
-            color: "blue",
-            weight: 2,
-            opacity: 0.5,
-            lineJoin: "round",
-          }).addTo(map);
-        }
-
-        // for (let c = 0; c < coordinates.length - 1; c++) {
-        //   await new Promise((r) => setTimeout(r, 30));
-        //   // console.log([coordinates[c], coordinates[c + 1]]);
-        //   let polyline = L.polyline([coordinates[c], coordinates[c + 1]], {
-        //     color: "blue",
-        //     weight: 3,
-        //     opacity: 0.4,
-        //     lineJoin: "round",
-        //   }).addTo(map);
-        // }
-      }
-    </script>
+    <div id="map" style="width: 100%; height: 100%;"></div>
+    <script src="mapRoutes.js"></script>
   </body>
 </html>
