@@ -1,56 +1,75 @@
 <template>
-  <footer class="o-container">
-    Plaintext here
-  </footer>
+  <div class="map-container">
+    <div id="map" style="width: 100%; height: 100%;"></div>
+  </div>
 </template>
 
 <script>
+import L from "leaflet";
+import polyUtil from "polyline-encoded";
+
+console.log(polyUtil);
+import routes from "./assets/routes.json";
+const ORIGINAL_OPACITY = 0.5;
+console.log(L);
 export default {
-  name: "Footer",
-  props: ["copyright"],
+  name: "bike-routes-main-component",
+  mounted() {
+    var map = L.map("map").setView([30.27, -97.75], 13);
+    L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 18,
+    }).addTo(map);
+
+    let allPolylines = [];
+    for (let id in routes) {
+      var coordinates = L.PolylineUtil.decode(routes[id].map.summary_polyline);
+
+      let polyline = L.polyline(coordinates, {
+        color: "blue",
+        weight: 2,
+        opacity: ORIGINAL_OPACITY,
+        lineJoin: "round",
+      });
+
+      polyline
+        .addTo(map)
+        .bindTooltip(new Date(routes[id].start_date).toLocaleDateString())
+        .on("mouseover", () => {
+          allPolylines.forEach((p) => p.setStyle({ opacity: 0 }));
+          polyline.setStyle({ opacity: ORIGINAL_OPACITY + 0.1 });
+        })
+        .on("mouseout", () => {
+          allPolylines.forEach((p) =>
+            p.setStyle({ opacity: ORIGINAL_OPACITY })
+          );
+        });
+
+      allPolylines.push(polyline);
+    }
+  },
 };
 </script>
 
-<style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap");
-
-footer {
-  font-family: Source Sans Pro;
+<style>
+body,
+html,
+.map-container,
+.map {
+  height: 100%;
+  width: 100%;
 }
 
-.o-container {
-  background-color: #3d3d3d;
-  line-height: 1.25;
-  font-size: 14px;
-  padding: 2em 0;
-  margin-top: 2em;
+.map-container {
+  box-sizing: border-box;
 }
 
-.o-container aside {
-  line-height: 1;
-  margin-bottom: 1.8em;
+html,
+body {
+  margin: 0px;
+  padding: 0px;
 }
 
-.o-container aside a {
-  color: white !important;
-  text-decoration: underline;
-}
-
-.o-container aside > h2 {
-  font-size: 1.2rem;
-  font-family: "Libre Baskerville", "Times New Roman", serif;
-  font-weight: 400;
-  text-transform: none;
-  margin: 0px 0px 10px 0px;
-}
-
-.o-container aside > p {
-  margin: 5px 0px;
-}
-
-.o-container .copyright {
-  margin-top: 1em;
-  margin-bottom: 0px;
-  text-align: left;
+.map-container {
+  padding: 5px;
 }
 </style>
