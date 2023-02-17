@@ -1,40 +1,26 @@
-<!DOCTYPE html>
-<html lang="">
+<html>
+  <head>
+    <title>Mapping my runs</title>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-  <link rel="apple-touch-icon" href="/favicon-96x96.png" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="jpiccirillo.com" />
-  <meta name="twitter:description" content="Software Engineer in Austin, TX" />
-  <meta name="twitter:title" content="Jeffrey Piccirillo" />
-  <meta property="og:image:secure"
-    content="https://raw.githubusercontent.com/jpiccirillo/jpiccirillo.github.io/new_section/new_section/src/assets/images/places/Places-04_small.jpg" />
-  <meta property="og:image"
-    content="https://raw.githubusercontent.com/jpiccirillo/jpiccirillo.github.io/new_section/new_section/src/assets/images/places/Places-04_small.jpg" />
-  <meta property="og:image:width" content="672" />
-  <meta property="og:image:height" content="448" />
-  <meta property="og:description" content="Software Engineer in Austin, TX" />
-  <meta name="description" content="Software Engineer in Austin, TX" />
-  <meta property="og:title" content="Jeffrey Piccirillo" />
-  <meta property="og:site_name" content="Personal Projects and Portfolio | Jeffrey Piccirillo" />
-  <title>Jeffrey Piccirillo</title>
-</head>
-
-<body>
-  <noscript>
-    <strong></strong>
-    We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
-      properly without JavaScript enabled. Please enable it to continue.
-      </strong>
-  </noscript>
-  <div id="app"></div>
-  <!-- built files will be auto injected -->
-</body>
-
+  <body>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://rawgit.com/jieter/Leaflet.encoded/master/Polyline.encoded.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <div id="map" style="width: 100%; height: 100%;"></div>
+    <script src="mapRoutes.js"></script>
+  </body>
 </html>
