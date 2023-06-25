@@ -7,15 +7,15 @@
 <script>
 import L from "leaflet";
 import polyUtil from "polyline-encoded";
-
-console.log(polyUtil);
 import routes from "./assets/routes.json";
 const ORIGINAL_OPACITY = 0.5;
-console.log(L);
+polyUtil;
+
 export default {
   name: "bike-routes-main-component",
   mounted() {
     var map = L.map("map").setView([30.27, -97.75], 13);
+
     L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 18,
     }).addTo(map);
@@ -31,10 +31,15 @@ export default {
         lineJoin: "round",
       });
 
-      polyline
+      let tooltip = polyline
         .addTo(map)
-        .bindTooltip(new Date(routes[id].start_date).toLocaleDateString())
-        .on("mouseover", () => {
+        .bindTooltip(new Date(routes[id].start_date).toLocaleDateString());
+
+      polyline
+        .on("mouseover", ({ containerPoint: { x, y } }) => {
+          tooltip.openTooltip(
+            map.mouseEventToLatLng({ clientX: x, clientY: y })
+          );
           allPolylines.forEach((p) => p.setStyle({ opacity: 0 }));
           polyline.setStyle({ opacity: ORIGINAL_OPACITY + 0.1 });
         })

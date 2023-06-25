@@ -1,7 +1,7 @@
 import MainComponent from "./MainComponent.vue";
 
 export default {
-  install(Vue, options) {
+  install(Vue) {
     Vue.component("bike-routes", MainComponent);
   },
 };
