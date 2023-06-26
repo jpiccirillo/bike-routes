@@ -18,6 +18,9 @@ jobs:
         with:
           persist-credentials: false
           
+      - name: Instal npm dependencies
+        run: npm install
+        
       - name: Fetch data
         run: STRAVA_API_TOKEN=$STRAVA_API_TOKEN npm run fetch-data
 
