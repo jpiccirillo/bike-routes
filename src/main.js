@@ -1,6 +1,6 @@
 import Vue from "vue";
-import MainComponent from "./MainComponent.vue";
+import Map from "./Map.vue";
 
 new Vue({
-  render: (h) => h(MainComponent),
+  render: (h) => h(Map),
 }).$mount("#app");
