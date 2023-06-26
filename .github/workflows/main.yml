@@ -17,12 +17,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-          
-      - name: Instal npm dependencies
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14.0
+
+      - name: Install npm dependencies
         run: npm install
-        
+
       - name: Fetch data
         run: STRAVA_API_TOKEN=$STRAVA_API_TOKEN npm run fetch-data
+
+      - name: Build project
+        run: npm run build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.5
