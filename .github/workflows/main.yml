@@ -10,16 +10,31 @@ jobs:
   build-and-deploy:
     concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     runs-on: ubuntu-latest
+    env:
+      STRAVA_API_TOKEN: ${{ secrets.STRAVA_API_TOKEN }}
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
         with:
           persist-credentials: false
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14.0
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Fetch data
+        run: STRAVA_API_TOKEN=$STRAVA_API_TOKEN npm run fetch-data
+
+      - name: Build project
+        run: npm run build
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages # The branch the action should deploy to.
-          folder: . # The folder the action should deploy.
-          clean: false # Automatically remove deleted files from the deploy branch
+          folder: dist # The folder the action should deploy.
+          clean: true # Automatically remove deleted files from the deploy branch

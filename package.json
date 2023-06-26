@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "fetch-data": "node ./scripts/fetch-strava-data",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -18,6 +19,7 @@
     "jquery": "^2.2.4",
     "jquery-ui": "^1.10.5",
     "leaflet": "^1.9.3",
+    "node-fetch": "^3.3.1",
     "polyline-encoded": "0.0.9",
     "sass-loader": "^10.1.1",
     "vue": "^2.6.11",
